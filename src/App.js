@@ -1,28 +1,30 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
 
-class App extends Component {
+import i18n from './i18n';
+
+import './styles/App.scss';
+
+import RouteConfig from './configs/RouteConfig';
+import store from './redux';
+
+export default class App extends React.Component {
+  componentDidMount() {
+    i18n.on('languageChanged', () => this.forceUpdate());
+  }
+
+  componentWillUnmount() {
+    i18n.off('languageChanged', () => this.forceUpdate());
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+          <RouteConfig />
+        </Provider>
+      </I18nextProvider>
     );
   }
 }
-
-export default App;
